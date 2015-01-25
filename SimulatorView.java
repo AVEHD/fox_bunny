@@ -3,6 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.awt.event.ActionListener;
 
 /**
  * A graphical view of the simulation grid.
@@ -11,10 +12,10 @@ import java.util.Map;
  * Colors for each type of species can be defined using the
  * setColor method.
  * 
- * @author David J. Barnes and Michael Kölling
+ * @author Jelmer Postma & Eric Gunnink & Adrian van Elk
  * @version 2011.07.31
  */
-public class SimulatorView extends JFrame
+public class SimulatorView extends JFrame implements ActionListener
 {
     // Colors used for empty locations.
     private static final Color EMPTY_COLOR = Color.white;
@@ -25,7 +26,9 @@ public class SimulatorView extends JFrame
     private final String STEP_PREFIX = "Step: ";
     private final String POPULATION_PREFIX = "Population: ";
     private JLabel stepLabel, population;
+    private JPanel linkerMenu;
     private FieldView fieldView;
+    
     
     // A map for storing colors for participants in the simulation
     private Map<Class, Color> colors;
@@ -45,6 +48,8 @@ public class SimulatorView extends JFrame
         setTitle("Fox and Rabbit Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
+        linkerMenu = new JPanel(new GridLayout(2,1));
+        
         
         setLocation(100, 50);
         
@@ -54,10 +59,35 @@ public class SimulatorView extends JFrame
         contents.add(stepLabel, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
         contents.add(population, BorderLayout.SOUTH);
+        contents.add(linkerMenu, BorderLayout.WEST);
+        addButton();
         pack();
         setVisible(true);
     }
     
+    
+    private void addButton()
+    { 
+    	JButton startButton = new JButton("1 stap");
+    	JButton stopButton = new JButton("100 stappen");
+    	linkerMenu.add(startButton);
+    	linkerMenu.add(stopButton);
+    	startButton.addActionListener(this);
+    	stopButton.addActionListener(this);
+    }
+    /**
+     *  Methode om een actie uit te voeren wanneer er op een knop wordt geklikt
+     */
+    public void actionPerformed(ActionEvent event)
+    {
+    	String command = event.getActionCommand();
+    	
+    	if(command.equals("1 stap"))
+    	{
+    		Simulator.simulateOneStep();
+    		
+    	}
+    }
     /**
      * Define a color to be used for a given class of animal.
      * @param animalClass The animal's Class object.
@@ -211,5 +241,6 @@ public class SimulatorView extends JFrame
                 }
             }
         }
+        
     }
 }

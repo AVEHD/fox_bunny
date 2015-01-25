@@ -1,0 +1,1 @@
+INDEX VERSION 1.127+C:\Users\Jelmer-ASUS\Documents\fox_bunny\.metadata\.plugins\org.eclipse.jdt.core
