@@ -28,19 +28,22 @@ public class SimulatorView extends JFrame implements ActionListener
     private JLabel stepLabel, population;
     private JPanel linkerMenu;
     private FieldView fieldView;
-    
+    public JButton oneStepButton = new JButton("1 stap");
+    public JButton oneHundredStepButton = new JButton("100 stappen");
     
     // A map for storing colors for participants in the simulation
     private Map<Class, Color> colors;
     // A statistics object computing and storing simulation information
     private FieldStats stats;
-
+    
+    private Simulator theSimulator;
+  
     /**
      * Create a view of the given width and height.
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width)
+    public SimulatorView(int height, int width, Simulator simulator)
     {
         stats = new FieldStats();
         colors = new LinkedHashMap<Class, Color>();
@@ -49,6 +52,7 @@ public class SimulatorView extends JFrame implements ActionListener
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         linkerMenu = new JPanel(new GridLayout(2,1));
+        theSimulator = simulator;
         
         
         setLocation(100, 50);
@@ -68,12 +72,11 @@ public class SimulatorView extends JFrame implements ActionListener
     
     private void addButton()
     { 
-    	JButton startButton = new JButton("1 stap");
-    	JButton stopButton = new JButton("100 stappen");
-    	linkerMenu.add(startButton);
-    	linkerMenu.add(stopButton);
-    	startButton.addActionListener(this);
-    	stopButton.addActionListener(this);
+    	
+    	linkerMenu.add(oneStepButton);
+    	linkerMenu.add(oneHundredStepButton);
+    	oneStepButton.addActionListener(this);
+    	oneHundredStepButton.addActionListener(this);
     }
     /**
      *  Methode om een actie uit te voeren wanneer er op een knop wordt geklikt
@@ -84,8 +87,12 @@ public class SimulatorView extends JFrame implements ActionListener
     	
     	if(command.equals("1 stap"))
     	{
-    		Simulator.simulateOneStep();
+    		theSimulator.simulateOneStep();
     		
+    	}
+    	if(command.equals("100 stappen"))
+    	{
+    		theSimulator.simulate(100);
     	}
     }
     /**

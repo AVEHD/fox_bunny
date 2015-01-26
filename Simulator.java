@@ -47,6 +47,7 @@ public class Simulator implements ActionListener
      * @param depth Depth of the field. Must be greater than zero.
      * @param width Width of the field. Must be greater than zero.
      */
+    
     public Simulator(int depth, int width)
     {
         if(width <= 0 || depth <= 0) {
@@ -58,9 +59,9 @@ public class Simulator implements ActionListener
         
         animals = new ArrayList<Animal>();
         field = new Field(depth, width);
-
+        Simulator simulator = this;
         // Create a view of the state of each location in the field.
-        view = new SimulatorView(depth, width);
+        view = new SimulatorView(depth, width, simulator);
         view.setColor(Rabbit.class, Color.orange);
         view.setColor(Fox.class, Color.blue);
         
