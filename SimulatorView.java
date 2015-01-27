@@ -12,8 +12,8 @@ import java.awt.event.ActionListener;
  * Colors for each type of species can be defined using the
  * setColor method.
  * 
- * @author Jelmer Postma & Eric Gunnink & Adrian van Elk
- * @version 2011.07.31
+ * @author Adriaan van Elk, Eric Gunnink & Jelmer Postma
+ * @version 27-1-2015
  */
 public class SimulatorView extends JFrame implements ActionListener
 {

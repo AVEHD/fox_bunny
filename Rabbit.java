@@ -5,28 +5,25 @@ import java.util.Random;
  * A simple model of a rabbit.
  * Rabbits age, move, breed, and die.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2011.07.31
+ * @author Adriaan van Elk, Eric Gunnink & Jelmer Postma
+ * @version 27-1-2015
  */
 public class Rabbit extends Animal
 {
     // Characteristics shared by all rabbits (class variables).
 
     // The age at which a rabbit can start to breed.
-    private static final int BREEDING_AGE = 5;
+    private static int BREEDING_AGE = 5;
     // The age to which a rabbit can live.
-    private static final int MAX_AGE = 40;
+    private static int MAX_AGE = 40;
     // The likelihood of a rabbit breeding.
-    private static final double BREEDING_PROBABILITY = 0.12;
+    private static double BREEDING_PROBABILITY = 0.12;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 4;
+    private static int MAX_LITTER_SIZE = 4;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    
-    // Individual characteristics (instance fields).
-    
-    // The rabbit's age.
-    private int age;
+    // The probability of a rabbit catching the disease
+    //private static final double DISEASE_PROBABILITY = 0.90;
 
     /**
      * Create a new rabbit. A rabbit may be created with age
@@ -39,9 +36,9 @@ public class Rabbit extends Animal
     public Rabbit(boolean randomAge, Field field, Location location)
     {
         super(field, location);
-        age = 0;
+        setAge(0);
         if(randomAge) {
-            age = rand.nextInt(MAX_AGE);
+            setAge(rand.nextInt(MAX_AGE));
         }
     }
     
@@ -50,7 +47,7 @@ public class Rabbit extends Animal
      * around. Sometimes it will breed or die of old age.
      * @param newRabbits A list to return newly born rabbits.
      */
-    public void act(List<Animal> newRabbits)
+    public void act(List<Actor> newRabbits)
     {
         incrementAge();
         if(isAlive()) {
@@ -66,58 +63,69 @@ public class Rabbit extends Animal
             }
         }
     }
-
+    
+    //Getters for the rabbit
+    
     /**
-     * Increase the age.
-     * This could result in the rabbit's death.
+     * Return the maximum age of the rabbit
+     * @return Maximum age
      */
-    private void incrementAge()
+    protected int getMaxAge()
     {
-        age++;
-        if(age > MAX_AGE) {
-            setDead();
-        }
+    	return MAX_AGE;
     }
     
     /**
-     * Check whether or not this rabbit is to give birth at this step.
-     * New births will be made into free adjacent locations.
-     * @param newRabbits A list to return newly born rabbits.
+     * Return the breeding age of the rabbit
+     * @return Breeding age
      */
-    private void giveBirth(List<Animal> newRabbits)
+    protected int getBreedingAge()
     {
-        // New rabbits are born into adjacent locations.
-        // Get a list of adjacent free locations.
-        Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
-        int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
-            Rabbit young = new Rabbit(false, field, loc);
-            newRabbits.add(young);
-        }
+    	return BREEDING_AGE;
     }
-        
+    
     /**
-     * Generate a number representing the number of births,
-     * if it can breed.
-     * @return The number of births (may be zero).
+     * Return the breeding probability of the rabbit
+     * @return Breeding probability
      */
-    private int breed()
+    protected double getBreedingProbability()
     {
-        int births = 0;
-        if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
-            births = rand.nextInt(MAX_LITTER_SIZE) + 1;
-        }
-        return births;
+    	return BREEDING_PROBABILITY;
     }
-
+    
     /**
-     * A rabbit can breed if it has reached the breeding age.
-     * @return true if the rabbit can breed, false otherwise.
+     * Return the maximum litter size of the rabbit
+     * @return Maximum litter size
      */
-    private boolean canBreed()
+    protected int getMaxLitterSize()
     {
-        return age >= BREEDING_AGE;
+    	return MAX_LITTER_SIZE;
     }
+    
+    //Setters for the rabbit
+    
+    /**
+     * Set the maximum age of the rabbit
+     */
+    protected void setMaxAge(int maxAge)
+    {
+    	MAX_AGE = maxAge;
+    }
+    
+    /**
+     * Set the breeding probability
+     */
+    protected void setBreedingProbability(double BreedingProbability)
+    {
+    	BREEDING_PROBABILITY = BreedingProbability;
+    }
+    
+    /**
+     * Set the maximum litter size
+     */
+    protected void setMaxLitterSize(int maxLitterSize)
+    {
+    	MAX_LITTER_SIZE = maxLitterSize;
+    }
+    
 }
